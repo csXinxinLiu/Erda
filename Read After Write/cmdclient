@@ -1,0 +1,1 @@
+gcc -g -o Client Client.c pflush.c pflush.h DS_c.h crc32.c crc32.h murmurhash.h murmurhash.c -L /root/rdma-core/build/lib -I /root/rdma-core/build/include -lpthread -libverbs -lrdmacm

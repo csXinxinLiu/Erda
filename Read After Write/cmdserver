@@ -1,0 +1,1 @@
+gcc -o server server.c DS_s.h murmurhash.c murmurhash.h crc32.c crc32.h pflush.c pflush.h -L /user/lib -L /root/rdma-core/build/lib -I /root/rdma-core/build/include -lpthread -libverbs -lrdmacm -lpmem
