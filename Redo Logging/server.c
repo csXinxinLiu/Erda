@@ -395,12 +395,14 @@ void rbflush(){
   int e=RB->pwrite - (1*RBUFFERSIZE/3);
   i = (e>=0) ? e:(e+RBUFFERSIZE);
   for(k=0;k<(1*RBUFFERSIZE/3);k++){
-    //printf("%d\n",k);
+    char *dataregion;
+    dataregion = (char *)malloc(valuesize+20);
     char key[20];
     strncpy(key,RB->data[i],19);
     key[19] = '\0';
     Bucket ht = findkey(key);
     if(ht){
+      ht->mark = (uint64_t)dataregion;
       memcpy((void *)(ht->mark),(void *)&(RB->data[i]),(valuesize+20));
       pflush((uint64_t *)(ht->mark),((valuesize+keysize-1)/64+1)*global_write_latency_ns);
       //asm_mfence();
@@ -411,6 +413,7 @@ void rbflush(){
       Bucket nht = setkey(H1,H2,key);
       RB->size--;
       if(nht){
+        nht->mark = (uint64_t)dataregion;
         memcpy((void *)(nht->mark),(void *)&(RB->data[i]),(valuesize+20));
         pflush((uint64_t *)(nht->mark),((valuesize+keysize-1)/64+1)*global_write_latency_ns);
         //asm_mfence();
